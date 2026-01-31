@@ -29,4 +29,16 @@ class CharTokenizer:
     def decode(self, indices):
         return ''.join([self.idx_to_char[i] for i in indices])
 
-    
+
+
+# Multi-Head Self-Attention
+class MultiHeadAttention(nn.Module):
+    def __init__(self, embed_dim, num_heads):
+        super().__init__()
+        self.embed_dim = embed_dim
+        self.num_heads = num_heads
+        self.head_dim = embed_dim // num_heads
+
+        # Linear projections for Q, K, V
+        self.qkv = nn.Linear(embed_dim, 3 * embed_dim)
+        self.out_proj = nn.Linear(embed_dim, embed_dim)
