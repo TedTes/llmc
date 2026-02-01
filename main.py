@@ -42,3 +42,13 @@ class MultiHeadAttention(nn.Module):
         # Linear projections for Q, K, V
         self.qkv = nn.Linear(embed_dim, 3 * embed_dim)
         self.out_proj = nn.Linear(embed_dim, embed_dim)
+
+    
+    def forward(self, x):
+        batch_size, seq_len , embed_dim = x.shape
+
+        # compute Q,K,V
+
+        qkv = self.qkv(x)
+        qkv = qkv.reshape(batch_size, seq_len, 3, self.num_heads , self.head_dim)
+        qkv = qkv.permute(2, 0, 3, 1, 4) # (3, batch, num_heads, seq_len, head_dim)
